@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservar Cita - Barber Studio</title>
+    <meta name="description" content="Reserva tu cita en Barber Studio de forma rápida y sencilla" />
+    <link rel="icon" href="img/logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .reservation-page {
+            padding: 4rem 0 2rem;
+            min-height: calc(100vh - 200px);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .reservation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .reservation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .reservation-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateX(-5px);
+        }
+
+        .reservation-form {
+            background: #2a2a2a;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: #d4af37;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .service-card {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        .service-card.selected {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .service-card h4 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .service-card p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Nuevos estilos para el selector de fecha y hora */
+        .date-time-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-container {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 2px solid #333;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+
+        .calendar-nav {
+            background: transparent;
+            border: none;
+            color: #d4af37;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.3rem;
+        }
+
+        .calendar-day {
+            text-align: center;
+            font-weight: bold;
+            color: #d4af37;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .calendar-date {
+            text-align: center;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .calendar-date:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .calendar-date.selected {
+            background: #d4af37;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .calendar-date.disabled {
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .calendar-date.today {
+            border: 2px solid #d4af37;
+        }
+
+        .time-slots-container {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 2px solid #333;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .time-slot:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .time-slot.selected {
+            background: #d4af37;
+            color: #1a1a1a;
+            border-color: #d4af37;
+        }
+
+        .time-slot.unavailable {
+            background: #444;
+            color: #666;
+            cursor: not-allowed;
+            border-color: #444;
+        }
+
+        .time-slot.unavailable:hover {
+            background: #444;
+            border-color: #444;
+        }
+
+        .summary-section {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 5px solid #d4af37;
+        }
+
+        .summary-title {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        .summary-item strong {
+            color: #fff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #d4af37, #b89735);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            color: #ff4e50;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reservation-container {
+                padding: 0 1rem;
+            }
+
+            .reservation-form {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .service-options {
+                grid-template-columns: 1fr;
+            }
+
+            .date-time-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reservation-form {
+                padding: 1.5rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+
+            .time-slot {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html"><img src="img/logo.jpg" alt="Barber Studio Logo" /></a>
+                </div>
+
+                <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-controls="main-nav"
+                    aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#servicios">Servicios</a></li>
+                        <li><a href="index.html#productos">Productos</a></li>
+                        <li><a href="index.html#ubicacion">Ubicación</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-utils">
+                    <div class="search">
+                        <label for="search-input" class="visually-hidden">Buscar</label>
+                        <input id="search-input" type="text" placeholder="Buscar..." />
+                    </div>
+                    <div class="cart">
+                        <a href="cart.html">
+                            <img src="img/carrito.jpg" alt="Carrito" id="cart-icon" />
+                            <span id="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Página de Reservas -->
+    <section class="reservation-page">
+        <div class="reservation-container">
+            <a href="index.html" class="back-btn">
+                ← Volver al inicio
+            </a>
+
+            <div class="reservation-header">
+                <h1>Reserva tu Cita</h1>
+                <p>Elige el servicio, fecha y hora que mejor te convengan</p>
+            </div>
+
+            <div class="success-message" id="success-message">
+                ¡Reserva realizada con éxito! Te hemos enviado un mensaje de confirmación por WhatsApp.
+            </div>
+
+            <form id="reservation-form" class="reservation-form">
+                <!-- Información Personal -->
+                <div class="form-section">
+                    <h3>📋 Información Personal</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nombre completo *</label>
+                            <input type="text" id="name" name="name" required>
+                            <div class="error-message" id="name-error">Por favor ingresa tu nombre completo</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                            <div class="error-message" id="phone-error">Por favor ingresa un número válido</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                </div>
+
+                <!-- Selección de Servicio -->
+                <div class="form-section">
+                    <h3>✂️ Selecciona un Servicio</h3>
+                    <div class="service-options">
+                        <div class="service-card" data-service="corte-clasico" data-price="20" data-duration="25">
+                            <h4>Corte Clásico</h4>
+                            <p>Estilos tradicionales y modernos</p>
+                            <p class="service-price">S/20.00</p>
+                            <p class="service-duration">25 min</p>
+                        </div>
+                        <div class="service-card" data-service="corte-desvanecido" data-price="25" data-duration="45">
+                            <h4>Corte Desvanecido</h4>
+                            <p>High fade, low fade o mid fade</p>
+                            <p class="service-price">S/25.00</p>
+                            <p class="service-duration">45 min</p>
+                        </div>
+                        <div class="service-card" data-service="perfilado-barba" data-price="15" data-duration="15">
+                            <h4>Perfilado de Barba</h4>
+                            <p>Con toalla caliente y navaja</p>
+                            <p class="service-price">S/15.00</p>
+                            <p class="service-duration">15 min</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selección de Fecha y Hora -->
+                <div class="form-section">
+                    <h3>📅 Selecciona Fecha y Hora</h3>
+                    <div class="date-time-selector">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button type="button" class="calendar-nav" id="prev-month">←</button>
+                                <span id="current-month">Febrero 2025</span>
+                                <button type="button" class="calendar-nav" id="next-month">→</button>
+                            </div>
+                            <div class="calendar-grid" id="calendar-days">
+                                <!-- Días de la semana -->
+                                <div class="calendar-day">Lun</div>
+                                <div class="calendar-day">Mar</div>
+                                <div class="calendar-day">Mié</div>
+                                <div class="calendar-day">Jue</div>
+                                <div class="calendar-day">Vie</div>
+                                <div class="calendar-day">Sáb</div>
+                                <div class="calendar-day">Dom</div>
+                                <!-- Las fechas se generarán con JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="time-slots-container">
+                            <h4 style="color: #d4af37; margin-bottom: 1rem;">Horarios disponibles</h4>
+                            <div class="time-slots" id="time-slots">
+                                <!-- Los horarios se generarán con JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comentarios Adicionales -->
+                <div class="form-section">
+                    <h3>💬 Comentarios Adicionales</h3>
+                    <div class="form-group">
+                        <textarea id="comments" name="comments" rows="3" placeholder="¿Algún detalle especial que debamos conocer?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Resumen de la Reserva -->
+                <div class="summary-section" id="reservation-summary">
+                    <h3 class="summary-title">Resumen de tu Reserva</h3>
+                    <div class="summary-item">
+                        <span>Servicio:</span>
+                        <strong id="summary-service">Ninguno seleccionado</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Fecha:</span>
+                        <strong id="summary-date">--/--/----</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Hora:</span>
+                        <strong id="summary-time">--:--</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Duración:</span>
+                        <strong id="summary-duration">-- min</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Precio:</span>
+                        <strong id="summary-price">S/0.00</strong>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Confirmar Reserva
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Ofrecemos un servicio de barbería de alta calidad,
+                        enfocado en brindar un estilo excepcional y una experiencia única.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Redes Sociales</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/12Jdpq6WK62/" target="_blank" aria-label="Facebook">
+                            <img src="img/icon-facebook.jpg" alt="Facebook" class="social-icon" />
+                        </a>
+                        <a href="https://www.instagram.com/juniorbarberc12/" target="_blank" aria-label="Instagram">
+                            <img src="img/icon-instagram.jpg" alt="Instagram" class="social-icon" />
+                        </a>
+                        <a href="https://www.tiktok.com/@calle12_barberstudio" target="_blank" aria-label="TikTok">
+                            <img src="img/icon-tiktok.jpg" alt="TikTok" class="social-icon" />
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contáctanos</h3>
+                    <p>Teléfono: +51 987 762 448</p>
+                    <p>Email: juniorraymundo42@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Barber Studio. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Variables globales
+            let selectedService = null;
+            let selectedDate = null;
+            let selectedTime = null;
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+            
+            // Elementos del DOM
+            const reservationForm = document.getElementById('reservation-form');
+            const serviceCards = document.querySelectorAll('.service-card');
+            const calendarDays = document.getElementById('calendar-days');
+            const currentMonthElement = document.getElementById('current-month');
+            const timeSlotsContainer = document.getElementById('time-slots');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Inicializar
+            generateCalendar(currentMonth, currentYear);
+            updateSummary();
+            
+            // Event Listeners
+            serviceCards.forEach(card => {
+                card.addEventListener('click', () => selectService(card));
+            });
+            
+            prevMonthBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            nextMonthBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            reservationForm.addEventListener('submit', handleFormSubmit);
+            
+            // Funciones
+            function selectService(card) {
+                serviceCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                
+                selectedService = {
+                    name: card.querySelector('h4').textContent,
+                    price: card.getAttribute('data-price'),
+                    duration: card.getAttribute('data-duration'),
+                    id: card.getAttribute('data-service')
+                };
+                
+                updateSummary();
+            }
+            
+            function generateCalendar(month, year) {
+                // Limpiar calendario (excepto los días de la semana)
+                while (calendarDays.children.length > 7) {
+                    calendarDays.removeChild(calendarDays.lastChild);
+                }
+                
+                // Actualizar el texto del mes actual
+                const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+                
+                // Obtener primer día del mes y cantidad de días
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Ajustar para que la semana comience en lunes
+                let startDay = firstDay === 0 ? 6 : firstDay - 1;
+                
+                // Agregar días vacíos al inicio si es necesario
+                for (let i = 0; i < startDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-date disabled';
+                    calendarDays.appendChild(emptyDay);
+                }
+                
+                // Agregar los días del mes
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateElement = document.createElement('div');
+                    dateElement.className = 'calendar-date';
+                    dateElement.textContent = day;
+                    
+                    const currentDate = new Date(year, month, day);
+                    
+                    // Marcar hoy
+                    if (currentDate.getTime() === today.getTime()) {
+                        dateElement.classList.add('today');
+                    }
+                    
+                    // Deshabilitar fechas pasadas
+                    if (currentDate < today) {
+                        dateElement.classList.add('disabled');
+                    } else {
+                        dateElement.addEventListener('click', () => selectDate(day, month, year));
+                    }
+                    
+                    calendarDays.appendChild(dateElement);
+                }
+            }
+            
+            function selectDate(day, month, year) {
+                // Limpiar selección anterior
+                document.querySelectorAll('.calendar-date.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // Marcar nueva selección
+                const dates = document.querySelectorAll('.calendar-date');
+                const selectedIndex = Array.from(dates).findIndex(el => 
+                    el.textContent == day && !el.classList.contains('disabled')
+                );
+                
+                if (selectedIndex !== -1) {
+                    dates[selectedIndex].classList.add('selected');
+                    selectedDate = new Date(year, month, day);
+                    generateTimeSlots();
+                    updateSummary();
+                }
+            }
+            
+            function generateTimeSlots() {
+                // Limpiar slots existentes
+                timeSlotsContainer.innerHTML = '';
+                
+                if (!selectedDate) return;
+                
+                // Generar horarios disponibles (9:00 AM - 6:00 PM)
+                const startHour = 9;
+                const endHour = 18;
+                const interval = 30; // minutos
+                
+                for (let hour = startHour; hour < endHour; hour++) {
+                    for (let minute = 0; minute < 60; minute += interval) {
+                        const timeSlot = document.createElement('div');
+                        timeSlot.className = 'time-slot';
+                        
+                        // Formatear hora
+                        const formattedHour = hour.toString().padStart(2, '0');
+                        const formattedMinute = minute.toString().padStart(2, '0');
+                        const timeString = `${formattedHour}:${formattedMinute}`;
+                        
+                        timeSlot.textContent = timeString;
+                        timeSlot.setAttribute('data-time', timeString);
+                        
+                        // Simular disponibilidad (aleatorio para demostración)
+                        const isAvailable = Math.random() > 0.3;
+                        
+                        if (!isAvailable) {
+                            timeSlot.classList.add('unavailable');
+                        } else {
+                            timeSlot.addEventListener('click', () => selectTime(timeSlot));
+                        }
+                        
+                        timeSlotsContainer.appendChild(timeSlot);
+                    }
+                }
+            }
+            
+            function selectTime(timeSlot) {
+                // Limpiar selección anterior
+                document.querySelectorAll('.time-slot.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // Marcar nueva selección
+                timeSlot.classList.add('selected');
+                selectedTime = timeSlot.getAttribute('data-time');
+                updateSummary();
+            }
+            
+            function updateSummary() {
+                document.getElementById('summary-service').textContent = 
+                    selectedService ? selectedService.name : 'Ninguno seleccionado';
+                
+                document.getElementById('summary-date').textContent = 
+                    selectedDate ? selectedDate.toLocaleDateString('es-ES') : '--/--/----';
+                
+                document.getElementById('summary-time').textContent = selectedTime || '--:--';
+                
+                document.getElementById('summary-duration').textContent = 
+                    selectedService ? `${selectedService.duration} min` : '-- min';
+                
+                document.getElementById('summary-price').textContent = 
+                    selectedService ? `S/${selectedService.price}.00` : 'S/0.00';
+                
+                // Habilitar/deshabilitar botón de envío
+                submitBtn.disabled = !(selectedService && selectedDate && selectedTime);
+            }
+            
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                
+                // Validación básica
+                const nameInput = document.getElementById('name');
+                const phoneInput = document.getElementById('phone');
+                let isValid = true;
+                
+                if (!nameInput.value.trim()) {
+                    document.getElementById('name-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('name-error').style.display = 'none';
+                }
+                
+                if (!phoneInput.value.trim() || phoneInput.value.length < 9) {
+                    document.getElementById('phone-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('phone-error').style.display = 'none';
+                }
+                
+                if (!isValid) return;
+                
+                // Mostrar estado de carga
+                submitBtn.innerHTML = '<span class="loading"></span> Procesando...';
+                submitBtn.disabled = true;
+                
+                // Simular procesamiento (en un caso real, aquí se enviarían los datos a un servidor)
+                setTimeout(() => {
+                    // Enviar reserva por WhatsApp
+                    sendWhatsAppReservation();
+                    
+                    // Mostrar mensaje de éxito
+                    document.getElementById('success-message').style.display = 'block';
+                    
+                    // Restablecer formulario
+                    reservationForm.reset();
+                    selectedService = null;
+                    selectedDate = null;
+                    selectedTime = null;
+                    
+                    // Restablecer selecciones visuales
+                    document.querySelectorAll('.service-card.selected, .calendar-date.selected, .time-slot.selected')
+                        .forEach(el => el.classList.remove('selected'));
+                    
+                    // Actualizar resumen
+                    updateSummary();
+                    
+                    // Restablecer botón
+                    submitBtn.innerHTML = 'Confirmar Reserva';
+                    submitBtn.disabled = false;
+                    
+                    // Desplazarse hacia arriba para mostrar el mensaje de éxito
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+            }
+            
+            function sendWhatsAppReservation() {
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const comments = document.getElementById('comments').value;
+                
+                const formattedDate = selectedDate.toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                let message = `¡Hola! Quiero reservar una cita en Barber Studio.%0A%0A`;
+                message += `*Nombre:* ${name}%0A`;
+                message += `*Teléfono:* ${phone}%0A`;
+                if (email) message += `*Email:* ${email}%0A`;
+                message += `*Servicio:* ${selectedService.name}%0A`;
+                message += `*Fecha:* ${formattedDate}%0A`;
+                message += `*Hora:* ${selectedTime}%0A`;
+                message += `*Precio:* S/${selectedService.price}.00%0A`;
+                if (comments) message += `*Comentarios:* ${comments}%0A`;
+                message += `%0A¡Espero su confirmación!`;
+                
+                const whatsappURL = `https://wa.me/51987762448?text=${message}`;
+                
+                // Abrir WhatsApp en una nueva pestaña
+                window.open(whatsappURL, '_blank');
+            }
+        });
+    </script>
+</body>
+
+</html>

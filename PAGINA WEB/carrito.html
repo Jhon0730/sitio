@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito - Barber Studio</title>
+    <meta name="description" content="Revisa tu carrito de compras en Barber Studio" />
+    <link rel="icon" href="img/logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .cart-page {
+            padding: 4rem 0 2rem;
+            min-height: calc(100vh - 200px);
+            background: #1a1a1a;
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .cart-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cart-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+            transform: translateX(-5px);
+        }
+
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .cart-items-section {
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .cart-item-full {
+            display: grid;
+            grid-template-columns: 100px 1fr auto auto;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .cart-item-full:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .cart-item-details h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-details p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1a1a1a;
+            border-radius: 25px;
+            padding: 0.25rem;
+        }
+
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #d4af37;
+            color: #1a1a1a;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #b89735;
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quantity-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #d4af37;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .remove-item-btn {
+            background: #ff4e50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-item-btn:hover {
+            background: #ff3030;
+            transform: scale(1.05);
+        }
+
+        .cart-summary {
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #d4af37;
+            padding-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #d4af37, #b89735);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .checkout-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #ccc;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .empty-cart h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #999;
+        }
+
+        .shop-now-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: #d4af37;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .shop-now-btn:hover {
+            background: #b89735;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+
+            .cart-item-full {
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+            }
+
+            .cart-item-details {
+                grid-column: 1 / -1;
+            }
+
+            .quantity-controls,
+            .item-price,
+            .remove-item-btn {
+                grid-column: 1 / -1;
+                justify-self: start;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-container {
+                padding: 0 1rem;
+            }
+
+            .cart-items-section,
+            .cart-summary {
+                padding: 1.5rem;
+            }
+
+            .cart-item-full {
+                grid-template-columns: 60px 1fr;
+                gap: 0.75rem;
+            }
+
+            .cart-item-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html"><img src="img/logo.jpg" alt="Barber Studio Logo" /></a>
+                </div>
+
+                <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-controls="main-nav"
+                    aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#servicios">Servicios</a></li>
+                        <li><a href="index.html#productos">Productos</a></li>
+                        <li><a href="index.html#ubicacion">Ubicación</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-utils">
+                    <div class="search">
+                        <label for="search-input" class="visually-hidden">Buscar</label>
+                        <input id="search-input" type="text" placeholder="Buscar..." />
+                    </div>
+                    <div class="cart">
+                        <img src="img/carrito.jpg" alt="Carrito" id="cart-icon" />
+                        <span id="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Página del Carrito -->
+    <section class="cart-page">
+        <div class="cart-container">
+            <a href="index.html" class="back-btn">
+                ← Volver al Inicio
+            </a>
+
+            <div class="cart-header">
+                <h1>Tu Carrito de Compras</h1>
+                <p>Revisa tus productos antes de finalizar la compra</p>
+            </div>
+
+            <div id="cart-full-content">
+                <!-- Contenido dinámico del carrito -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Ofrecemos un servicio de barbería de alta calidad,
+                        enfocado en brindar un estilo excepcional y una experiencia única.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Redes Sociales</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/12Jdpq6WK62/" target="_blank" aria-label="Facebook">
+                            <img src="img/icon-facebook.jpg" alt="Facebook" class="social-icon" />
+                        </a>
+                        <a href="https://www.instagram.com/juniorbarberc12/" target="_blank" aria-label="Instagram">
+                            <img src="img/icon-instagram.jpg" alt="Instagram" class="social-icon" />
+                        </a>
+                        <a href="https://www.tiktok.com/@calle12_barberstudio" target="_blank" aria-label="TikTok">
+                            <img src="img/icon-tiktok.jpg" alt="TikTok" class="social-icon" />
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contáctanos</h3>
+                    <p>Teléfono: +51 987 762 448</p>
+                    <p>Email: juniorraymundo42@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Barber Studio. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartFullContent = document.getElementById("cart-full-content");
+            const cartCounter = document.getElementById("cart-count");
+            
+            let cart = JSON.parse(localStorage.getItem('barberCart')) || [];
+
+            function updateCartPage() {
+                if (cart.length === 0) {
+                    cartFullContent.innerHTML = `
+                        <div class="empty-cart">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+                            <h3>Tu carrito está vacío</h3>
+                            <p>¡Agrega algunos productos increíbles!</p>
+                            <a href="index.html#productos" class="shop-now-btn">Ver Productos</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const total = cart.reduce((sum, item) => {
+                    const price = parseFloat(item.price.replace('S/', ''));
+                    return sum + (price * item.quantity);
+                }, 0);
+
+                const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+                cartFullContent.innerHTML = `
+                    <div class="cart-content">
+                        <div class="cart-items-section">
+                            <h2 style="color: #d4af37; margin-bottom: 1.5rem;">Productos (${itemCount})</h2>
+                            ${cart.map((item, index) => `
+                                <div class="cart-item-full" data-index="${index}">
+                                    <img src="${item.imgSrc}" alt="${item.name}" class="cart-item-image" />
+                                    <div class="cart-item-details">
+                                        <h3>${item.name}</h3>
+                                        <p>Precio unitario: ${item.price}</p>
+                                    </div>
+                                    <div class="quantity-controls">
+                                        <button class="quantity-btn decrease-btn" data-index="${index}">-</button>
+                                        <span class="quantity-display">${item.quantity}</span>
+                                        <button class="quantity-btn increase-btn" data-index="${index}">+</button>
+                                    </div>
+                                    <div class="item-price">S/${(parseFloat(item.price.replace('S/', '')) * item.quantity).toFixed(2)}</div>
+                                    <button class="remove-item-btn" data-index="${index}">Eliminar</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="cart-summary">
+                            <h3 class="summary-title">Resumen de Compra</h3>
+                            <div class="summary-row">
+                                <span>Subtotal (${itemCount} productos):</span>
+                                <span>S/${total.toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Envío:</span>
+                                <span>Gratis</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span>S/${total.toFixed(2)}</span>
+                            </div>
+                            <button class="checkout-btn" onclick="proceedToCheckout()">
+                                Proceder al Pago
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Event listeners para los controles
+                document.querySelectorAll('.increase-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        cart[index].quantity = (cart[index].quantity || 1) + 1;
+                        saveCartAndUpdate();
+                    });
+                });
+
+                document.querySelectorAll('.decrease-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity -= 1;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                        saveCartAndUpdate();
+                    });
+                });
+
+                document.querySelectorAll('.remove-item-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                            cart.splice(index, 1);
+                            saveCartAndUpdate();
+                        }
+                    });
+                });
+
+                cartCounter.textContent = itemCount;
+            }
+
+            function saveCartAndUpdate() {
+                // Asegurar que todos los items tengan cantidad
+                cart = cart.map(item => ({
+                    ...item,
+                    quantity: item.quantity || 1
+                }));
+                
+                localStorage.setItem('barberCart', JSON.stringify(cart));
+                updateCartPage();
+            }
+
+            // Inicializar cantidades si no existen
+            cart = cart.map(item => ({
+                ...item,
+                quantity: item.quantity || 1
+            }));
+
+            window.proceedToCheckout = function() {
+                const total = cart.reduce((sum, item) => {
+                    const price = parseFloat(item.price.replace('S/', ''));
+                    return sum + (price * item.quantity);
+                }, 0);
+
+                const message = `Hola, quiero comprar estos productos:\n\n${cart.map(item => 
+                    `• ${item.name} (x${item.quantity}) - ${item.price} c/u`
+                ).join('\n')}\n\nTotal: S/${total.toFixed(2)}`;
+
+                const phoneNumber = "51987762448";
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, "_blank");
+            };
+
+            updateCartPage();
+        });
+    </script>
+</body>
+
+</html>

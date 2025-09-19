@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barber Studio</title>
+    <meta name="description"
+        content="Barbería clásica con servicios personalizados y productos de calidad. ¡Visítanos y vive la experiencia!" />
+    <meta name="author" content="Barber Studio" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="img/logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="#"><img src="img/logo.jpg" alt="Barber Studio Logo" /></a>
+                </div>
+
+                <!-- Botón hamburguesa -->
+                <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-controls="main-nav"
+                    aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#ubicacion">Ubicación</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-utils">
+                    <div class="search">
+                        <label for="search-input" class="visually-hidden">Buscar</label>
+                        <input id="search-input" type="text" placeholder="Buscar..." />
+                    </div>
+                    <div class="cart">
+                        <img src="img/carrito.jpg" alt="Carrito" id="cart-icon" />
+                        <span id="cart-count">0</span>
+                        <div id="cart-notification" class="cart-notification"
+                            style="display: none; position: absolute; top: 50px; right: 10px; background: #d4af37; color: #1a1a1a; padding: 5px 10px; border-radius: 5px; font-size: 12px; z-index: 1000;">
+                            ¡Producto añadido!</div>
+                        <div class="cart-dropdown" id="cart-dropdown">
+                            <div class="cart-items" id="cart-items">
+                                <p>🛒 Carrito vacío</p>
+                            </div>
+                            <div id="cart-actions" class="cart-actions" style="display: none;">
+                                <button id="clear-cart" class="clear-cart-btn">🗑️ Eliminar todo</button>
+                                <button id="view-cart" class="view-cart-btn">Ver Carrito</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" style="background-image: url('img/banner.jpg')">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Bienvenido a Barber Studio</h1>
+                <p>Tu lugar para el mejor cuidado masculino</p>
+                <button  class="btn" id="reserve-btn">Reservar Ahora</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenido Principal -->
+    <main>
+        <!-- Servicios -->
+        <section id="servicios" class="services">
+            <div class="container">
+                <h2>Nuestros Servicios</h2>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <div class="service-image-container">
+                            <img src="img/corte-classic.jpg" alt="Corte Clásico" />
+                        </div>
+                        <div class="service-info">
+                            <h3>Corte Clásico</h3>
+                            <p class="service-description">Estilos tradicionales y modernos<br />Duración: 25 minutos
+                            </p>
+                            <p class="service-price">S/20.00</p>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-image-container">
+                            <img src="img/desvanecidos.jpg" alt="Corte Desvanecido" />
+                        </div>
+                        <div class="service-info">
+                            <h3>Corte Desvanecido</h3>
+                            <p class="service-description">High fade, low fade o mid fade<br />Duración: 45 minutos</p>
+                            <p class="service-price">S/25.00</p>
+                        </div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-image-container">
+                            <img src="img/perfiladoBarba.jpg" alt="Perfilado de Barba" />
+                        </div>
+                        <div class="service-info">
+                            <h3>Perfilado de Barba</h3>
+                            <p class="service-description">Con toalla caliente y navaja<br />Duración: 15 minutos</p>
+                            <p class="service-price">S/15.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Productos -->
+        <section id="productos" class="products">
+            <div class="container">
+                <h2>Productos Destacados</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="img/cera.jpg" alt="Cera para Peinados" draggable="true" data-name="Cera para Peinados"
+                            data-price="S/15.00" />
+                        <h3 class="product-name">Cera para Peinados</h3>
+                        <p class="product-price">S/15.00</p>
+                        <button class="add-to-cart">Añadir al carrito</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="img/rolda-gel.jpg" alt="Rolda Gel Fijador" draggable="true"
+                            data-name="Rolda Gel Fijador" data-price="S/13.00" />
+                        <h3 class="product-name">Rolda Gel Fijador</h3>
+                        <p class="product-price">S/13.00</p>
+                        <button class="add-to-cart">Añadir al carrito</button>
+                    </div>
+                    <div class="product-card">
+                        <img src="img/polvo-texturizador.jpg" alt="Polvo Texturizador" draggable="true"
+                            data-name="Immortal Infuse Polvo Texturizador" data-price="S/35.00" />
+                        <h3 class="product-name">Immortal Infuse Polvo Texturizador</h3>
+                        <p class="product-price">S/35.00</p>
+                        <button class="add-to-cart">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="testimonials">
+            <div class="container">
+                <h2>Lo que Dicen Nuestros Clientes</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p>"El mejor corte que he tenido, ¡los barberos son geniales!"</p>
+                        <cite>- Matias S.</cite>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Ambiente increíble y atención de primera."</p>
+                        <cite>- Daniel P.</cite>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ubicación -->
+        <section id="ubicacion" class="location">
+            <div class="container">
+                <h2>¿Dónde nos ubicas?</h2>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3903.086360709721!2d-77.00511482494012!3d-11.968522588262188!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDU4JzA2LjciUyA3N8KwMDAnMDkuMSJX!5e0!3m2!1ses-419!2spe!4v1745964188128!5m2!1ses-419!2spe"
+                        width="100%" height="450" style="border: 0" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div id="contacto" class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Ofrecemos un servicio de barbería de alta calidad,
+                        enfocado en brindar un estilo excepcional y una experiencia única..</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Redes Sociales</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/12Jdpq6WK62/" target="_blank" aria-label="Facebook">
+                            <img src="img/icon-facebook.jpg" alt="Facebook" class="social-icon" />
+                        </a>
+                        <a href="https://www.instagram.com/juniorbarberc12/" target="_blank" aria-label="Instagram">
+                            <img src="img/icon-instagram.jpg" alt="Instagram" class="social-icon" />
+                        </a>
+                        <a href="https://www.tiktok.com/@calle12_barberstudio" target="_blank" aria-label="TikTok">
+                            <img src="img/icon-tiktok.jpg" alt="TikTok" class="social-icon" />
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contáctanos</h3>
+                    <p>Teléfono: +51 987 762 448</p>
+                    <p>Email: juniorraymundo42@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Suscríbete</h3>
+                    <p>Deje su correo electrónico a continuación y reciba actualizaciones de ofertas especiales y
+                        descuentos primero.</p>
+                    <form action="#" id="subscription-form">
+                        <label for="email-footer" class="visually-hidden">Tu email</label>
+                        <div class="subscription-input-group">
+                            <input id="email-footer" type="email" placeholder="Tu email" required />
+                            <button type="submit" class="btn">Suscribirse</button>
+                        </div>
+                    </form>
+
+                    <p id="subscription-message" class="hidden-message">¡Gracias por suscribirte!</p>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Barber Studio. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
